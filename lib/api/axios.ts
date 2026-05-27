@@ -1,0 +1,29 @@
+"use client"
+
+import axios from "axios"
+import { getSession, signOut } from "next-auth/react"
+
+const api = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  headers: { "Content-Type": "application/json" },
+})
+
+api.interceptors.request.use(async (config) => {
+  const session = await getSession()
+  if (session?.accessToken) {
+    config.headers.Authorization = `Bearer ${session.accessToken}`
+  }
+  return config
+})
+
+api.interceptors.response.use(
+  (res) => res,
+  async (err) => {
+    if (err.response?.status === 401) {
+      await signOut({ redirect: true, callbackUrl: "/login" })
+    }
+    return Promise.reject(err)
+  }
+)
+
+export default api

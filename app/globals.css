@@ -1,26 +1,122 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #0A0A0A;
+  --fg: #F0E8D0;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body { height: 100%; }
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+button, input, select, textarea {
+  outline: none;
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+}
+
+input::placeholder, textarea::placeholder {
+  color: rgba(240,232,208,0.28);
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px #111110 inset;
+  -webkit-text-fill-color: #F0E8D0;
+  caret-color: #F0E8D0;
+}
+
+select option {
+  background: #111110;
+  color: #F0E8D0;
+}
+
+.nice-scroll::-webkit-scrollbar { width: 3px; }
+.nice-scroll::-webkit-scrollbar-track { background: transparent; }
+.nice-scroll::-webkit-scrollbar-thumb {
+  background: rgba(240,232,208,0.15);
+  border-radius: 2px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.4; transform: scale(0.85); }
+}
+
+@keyframes scanLine {
+  0%   { top: 60px; opacity: 0; }
+  15%  { opacity: 1; }
+  85%  { opacity: 1; }
+  100% { top: calc(100% - 60px); opacity: 0; }
+}
+
+/* ─── Sidebar drawer (mobile) ───────────────────── */
+.sidebar-backdrop {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(0, 0, 0, 0.62);
+  z-index: 40;
+  cursor: pointer;
+}
+.sidebar-backdrop.open { display: block }
+
+@media (max-width: 1024px) {
+  .sidebar-shell {
+    position: fixed !important;
+    top: 0; left: 0; height: 100vh;
+    z-index: 50;
+    transform: translateX(-100%);
+    transition: transform 240ms ease;
+  }
+  .sidebar-shell.open {
+    transform: translateX(0);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ─── Responsive utilities ──────────────────────── */
+.page-body    { padding: 36px 40px 48px }
+.grid-kpi     { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px }
+.grid-kpi-3   { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px }
+.grid-2col    { display: grid; grid-template-columns: 1fr 1fr; gap: 24px }
+.table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch }
+
+.topbar       { padding: 0 40px; gap: 32px }
+.mobile-only  { display: none !important }
+
+@media (max-width: 1024px) {
+  .topbar       { padding: 0 16px; gap: 12px }
+  .page-body    { padding: 24px 20px 36px }
+  .grid-kpi     { grid-template-columns: repeat(2, 1fr) }
+  .grid-kpi-3   { grid-template-columns: repeat(2, 1fr) }
+  .grid-2col    { grid-template-columns: 1fr }
+  .mobile-only  { display: flex !important }
+  .hide-mobile  { display: none !important }
+}
+
+@media (max-width: 640px) {
+  .page-body    { padding: 16px 14px 28px }
+  .grid-kpi     { grid-template-columns: 1fr }
+  .grid-kpi-3   { grid-template-columns: 1fr }
+  .hide-sm      { display: none !important }
 }
