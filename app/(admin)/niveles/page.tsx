@@ -29,7 +29,7 @@ export default function NivelesPage() {
   const { data: breakdown = [] }   = useTierBreakdown()
   const { data: settings }         = useSettings()
 
-  const countMap = Object.fromEntries(breakdown.map((b) => [b.tier_key, b.count]))
+  const countMap = Object.fromEntries(breakdown.map((b) => [b.tier, b.count]))
   const tiersSorted = [...tiers].sort((a, b) => a.ord - b.ord)
   const expiryMonths = settings?.points_expiry_months ?? 12
 
