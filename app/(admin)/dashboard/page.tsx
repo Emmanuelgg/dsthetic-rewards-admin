@@ -94,7 +94,7 @@ export default function DashboardPage() {
                     </div>
                   </div>
                   <div style={{ height: 1, background: COLORS.hairline, position: "relative" }}>
-                    <div style={{ position: "absolute", inset: 0, width: `${row.share * 100}%`, background: TIERS[row.tier_key as keyof typeof TIERS]?.accent as string ?? COLORS.gold }} />
+                    <div style={{ position: "absolute", inset: 0, width: `${row.share * 100}%`, background: TIERS[row.tier as keyof typeof TIERS]?.accent as string ?? COLORS.gold }} />
                   </div>
                 </div>
               ))}
