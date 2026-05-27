@@ -4,7 +4,7 @@ import { NextResponse } from "next/server"
 export default auth((req) => {
   const isLoggedIn   = !!req.auth
   const isLoginPage  = req.nextUrl.pathname === "/login"
-  const isPublicPath = req.nextUrl.pathname.startsWith("/api/auth")
+  const isPublicPath = req.nextUrl.pathname.startsWith("/auth")
 
   if (isPublicPath) return NextResponse.next()
   if (!isLoggedIn && !isLoginPage) {
@@ -17,5 +17,5 @@ export default auth((req) => {
 })
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
+  matcher: ["/((?!api|auth|_next/static|_next/image|favicon.ico).*)"],
 }

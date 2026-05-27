@@ -11,6 +11,7 @@ function decodeJwtPayload(token: string): Record<string, unknown> {
 }
 
 export const { auth, signIn, signOut, handlers } = NextAuth({
+  basePath: "/auth",
   providers: [
     Credentials({
       credentials: {
@@ -21,7 +22,7 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
         if (!credentials?.email || !credentials?.password) return null
         try {
           const res = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
+            `${process.env.API_URL_INTERNAL}/auth/login`,
             {
               method:  "POST",
               headers: { "Content-Type": "application/json" },
