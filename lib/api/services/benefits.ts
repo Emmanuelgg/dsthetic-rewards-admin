@@ -1,7 +1,7 @@
 import api from "@/lib/api/axios"
 import type { Page, Reward } from "@/lib/types"
 
-export interface RewardListParams {
+export interface BenefitListParams {
   search?: string
   kind?: string
   is_active?: boolean
@@ -11,8 +11,8 @@ export interface RewardListParams {
   order_dir?: "asc" | "desc"
 }
 
-export const rewardsService = {
-  list: (params?: RewardListParams) =>
+export const benefitsService = {
+  list: (params?: BenefitListParams) =>
     api.get<Page<Reward>>("/rewards", { params }).then((r) => r.data),
 
   create: (body: Omit<Reward, "id" | "created_at">) =>

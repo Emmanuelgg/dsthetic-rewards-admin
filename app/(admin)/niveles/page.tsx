@@ -394,7 +394,7 @@ function TierEditor({ tier, onClose }: { tier: Tier; onClose: () => void }) {
           </Field>
           <div style={{ marginTop: 12, fontFamily: SERIF, fontStyle: "italic", fontSize: 12, color: COLORS.ivoryMute, lineHeight: 1.5 }}>
             Los productos canjeables se gestionan en{" "}
-            <a href="/recompensas" style={{ color: COLORS.gold }}>Recompensas</a>{" "}
+            <a href="/beneficios" style={{ color: COLORS.gold }}>Beneficios</a>{" "}
             y los umbrales en el panel inferior.
           </div>
         </div>

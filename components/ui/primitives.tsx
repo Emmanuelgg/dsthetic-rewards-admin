@@ -44,7 +44,7 @@ export function Display({ children, size = 44, italic = true, weight = 300, colo
 }
 
 // ─── Wordmark ─────────────────────────────────────────────
-export function Wordmark({ size = 14, sub = "Admin · Recompensas" }: { size?: number; sub?: string }) {
+export function Wordmark({ size = 14, sub = "Admin · Membership" }: { size?: number; sub?: string }) {
   return (
     <div style={{ textAlign: "left", lineHeight: 1 }}>
       <div style={{

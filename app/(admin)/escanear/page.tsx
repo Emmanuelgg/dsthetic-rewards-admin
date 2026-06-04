@@ -10,7 +10,7 @@ import {
 } from "@/components/ui"
 import { TopBar } from "@/components/layout/TopBar"
 import { useCreditMember, useMembers, useMemberTransactions, useRedeemReward } from "@/hooks/useMembers"
-import { useRewards } from "@/hooks/useRewards"
+import { useBenefits } from "@/hooks/useBenefits"
 import { useTreatments } from "@/hooks/useTreatments"
 import type { MemberLedger, Transaction } from "@/lib/types"
 import { membersService } from "@/lib/api/services/members"
@@ -103,7 +103,7 @@ export default function EscanearPage() {
           <div style={{ maxWidth: 540 }}>
             <Display size={32} weight={400} style={{ marginBottom: 8 }}>Escanea la tarjeta del socio</Display>
             <div style={{ fontFamily: SERIF, fontStyle: "italic", fontSize: 15, color: COLORS.ivoryDim, lineHeight: 1.5 }}>
-              Ingresa el código del socio o selecciónalo de la lista reciente para acreditar una visita o canjear una recompensa.
+              Ingresa el código del socio o selecciónalo de la lista reciente para acreditar una visita o canjear un beneficio.
             </div>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
@@ -213,8 +213,9 @@ export default function EscanearPage() {
                   <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
                     {members.slice(0, 6).map((m) => (
                       <button key={m.id} onClick={() => scanById(m.id)} disabled={phase === "searching"}
-                        style={{ fontFamily: MONO, fontSize: 9, letterSpacing: "0.12em", padding: "6px 9px", borderRadius: 1, border: `0.5px solid ${COLORS.hairlineStrong}`, color: COLORS.ivoryDim, background: "transparent", cursor: phase === "searching" ? "wait" : "pointer" }}>
-                        {m.code.slice(-4)}
+                        style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 2, padding: "6px 9px", borderRadius: 1, border: `0.5px solid ${COLORS.hairlineStrong}`, background: "transparent", cursor: phase === "searching" ? "wait" : "pointer" }}>
+                        <span style={{ fontSize: 11, color: COLORS.ivory }}>{m.first_name} {m.last_name}</span>
+                        <span style={{ fontFamily: MONO, fontSize: 9, letterSpacing: "0.12em", color: COLORS.ivoryDim }}>{m.code.slice(-4)}</span>
                       </button>
                     ))}
                   </div>
@@ -469,7 +470,7 @@ function ProfileMatched({ ledger, visitCount, redeemCount, onCredit, onRedeem }:
       <div style={{ marginTop: "auto", padding: "22px 26px", background: "rgba(201,168,76,0.025)", display: "flex", flexDirection: "column", gap: 10 }}>
         <Btn variant="gold" size="lg" onClick={onCredit} icon={<Icon name="plus" size={14} color={COLORS.black} />}>Acreditar visita</Btn>
         <div style={{ display: "flex", gap: 10 }}>
-          <Btn variant="ghost" onClick={onRedeem} style={{ flex: 1, justifyContent: "center" }} icon={<Icon name="gift" size={14} />}>Canjear recompensa</Btn>
+          <Btn variant="ghost" onClick={onRedeem} style={{ flex: 1, justifyContent: "center" }} icon={<Icon name="gift" size={14} />}>Canjear beneficio</Btn>
           <Btn variant="ghost" onClick={() => router.push(`/socios?member=${ledger.id}`)} icon={<Icon name="arrow-r" size={12} />}>Perfil</Btn>
         </div>
       </div>
@@ -558,10 +559,10 @@ function CreditModal({ ledger, onClose, onDone }: { ledger: MemberLedger; onClos
 
 // ─── Redeem Modal ──────────────────────────────────────────
 function RedeemModal({ ledger, onClose, onDone }: { ledger: MemberLedger; onClose: () => void; onDone: (text: string) => void }) {
-  const { data: rewardsPage } = useRewards()
-  const rewards = rewardsPage?.items ?? []
+  const { data: benefitsPage } = useBenefits()
+  const benefits = benefitsPage?.items ?? []
   const redeem    = useRedeemReward()
-  const available = rewards.filter((r) => r.is_active)
+  const available = benefits.filter((r) => r.is_active)
   const [selected, setSelected] = useState<string>("")
 
   const memberTierOrd = TIER_ORD[ledger.tier] ?? 1
@@ -586,7 +587,7 @@ function RedeemModal({ ledger, onClose, onDone }: { ledger: MemberLedger; onClos
 
   return (
     <div>
-      <ModalHeader eyebrow="Canjear recompensa" title="Elegir del catálogo" sub={`${ledger.first_name} · saldo actual ${ledger.smiles_balance.toLocaleString("es-MX")} smiles`} onClose={onClose} />
+      <ModalHeader eyebrow="Canjear beneficio" title="Elegir del catálogo" sub={`${ledger.first_name} · saldo actual ${ledger.smiles_balance.toLocaleString("es-MX")} smiles`} onClose={onClose} />
       <div style={{ padding: "20px 28px 24px", display: "grid", gridTemplateColumns: "1.1fr 1fr", gap: 20 }}>
         <div style={{ display: "flex", flexDirection: "column", gap: 1, maxHeight: 380, overflow: "auto" }} className="nice-scroll">
           {available.map((it) => {

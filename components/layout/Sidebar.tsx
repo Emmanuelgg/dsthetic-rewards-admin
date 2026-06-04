@@ -22,7 +22,7 @@ const NAV: NavEntry[] = [
   { id: "dashboard",  label: "Dashboard",   icon: "dash",     primary: false, href: "/dashboard"  },
   { id: "socios",     label: "Socios",      icon: "users",    primary: false, href: "/socios"     },
   { id: "niveles",    label: "Niveles",     icon: "tiers",    primary: false, href: "/niveles"    },
-  { id: "recompensas",label: "Recompensas", icon: "gift",     primary: false, href: "/recompensas"},
+  { id: "beneficios",  label: "Beneficios",  icon: "gift",     primary: false, href: "/beneficios" },
   { id: "servicios",  label: "Servicios",   icon: "tooth",    primary: false, href: "/servicios"  },
   { id: "ajustes",    label: "Ajustes",     icon: "settings", primary: false, href: "/ajustes", adminOnly: true },
 ]
@@ -49,7 +49,7 @@ export function Sidebar() {
       }} />
 
       <div style={{ padding: "32px 28px 28px", borderBottom: `0.5px solid ${COLORS.hairline}` }}>
-        <Wordmark size={13} sub="Admin · Recompensas" />
+        <Wordmark size={13} sub="Admin · Membership" />
       </div>
 
       <nav style={{ flex: 1, padding: "24px 14px", display: "flex", flexDirection: "column", gap: 2 }}>

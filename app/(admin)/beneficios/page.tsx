@@ -7,13 +7,13 @@ import {
   Pagination, Panel, Press, Switch, TierGlyph, INPUT_STYLE,
 } from "@/components/ui"
 import { TopBar } from "@/components/layout/TopBar"
-import { useCreateReward, useDeleteReward, useRewards, useUpdateReward } from "@/hooks/useRewards"
+import { useCreateBenefit, useDeleteBenefit, useBenefits, useUpdateBenefit } from "@/hooks/useBenefits"
 import type { Reward } from "@/lib/types"
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
 
-const rewardSchema = yup.object({
+const benefitSchema = yup.object({
   name:       yup.string().required("Requerido"),
   kind:       yup.string().required(),
   cost:       yup.number().min(1, "Debe ser mayor a 0").required(),
@@ -24,9 +24,9 @@ const rewardSchema = yup.object({
 })
 
 const LIMIT = 24
-const REWARD_KINDS = ["todos", "Tratamiento", "Producto", "Consulta", "Experiencia"]
+const BENEFIT_KINDS = ["todos", "Tratamiento", "Producto", "Consulta", "Experiencia"]
 
-export default function RecompensasPage() {
+export default function BeneficiosPage() {
   const [search,       setSearch]    = useState("")
   const [kindFilter,   setKindFilter] = useState("todos")
   const [statusFilter, setStatus]    = useState<"todos" | "activas" | "pausa">("todos")
@@ -38,7 +38,7 @@ export default function RecompensasPage() {
 
   const isActiveParam = statusFilter === "activas" ? true : statusFilter === "pausa" ? false : undefined
 
-  const { data } = useRewards({
+  const { data } = useBenefits({
     search:    search || undefined,
     kind:      kindFilter !== "todos" ? kindFilter : undefined,
     is_active: isActiveParam,
@@ -48,10 +48,10 @@ export default function RecompensasPage() {
     order_dir: "desc",
   })
 
-  const rewards = data?.items ?? []
-  const total   = data?.total ?? 0
+  const benefits = data?.items ?? []
+  const total    = data?.total ?? 0
 
-  const editing = editingId ? rewards.find((r) => r.id === editingId) : null
+  const editing = editingId ? benefits.find((r) => r.id === editingId) : null
 
   return (
     <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
@@ -59,13 +59,13 @@ export default function RecompensasPage() {
       <div className="page-body nice-scroll" style={{ flex: 1, overflow: "auto" }}>
         <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 24, marginBottom: 28, flexWrap: "wrap" }}>
           <div style={{ flex: 1, minWidth: 0 }}>
-            <Display size={32} weight={400} style={{ marginBottom: 10 }}>Catálogo de recompensas</Display>
+            <Display size={32} weight={400} style={{ marginBottom: 10 }}>Catálogo de beneficios</Display>
             <div style={{ fontFamily: SERIF, fontStyle: "italic", fontSize: 15, color: COLORS.ivoryDim, lineHeight: 1.5, maxWidth: 580 }}>
-              {total.toLocaleString("es-MX")} recompensas encontradas
+              {total.toLocaleString("es-MX")} beneficios encontrados
             </div>
           </div>
           <Btn variant="gold" onClick={() => setCreating(true)} icon={<Icon name="plus" size={13} color={COLORS.black} />} style={{ whiteSpace: "nowrap", flexShrink: 0 }}>
-            Nueva recompensa
+            Nuevo beneficio
           </Btn>
         </div>
 
@@ -74,7 +74,7 @@ export default function RecompensasPage() {
           <div style={{ padding: "14px 22px", display: "flex", alignItems: "center", gap: 22, flexWrap: "wrap" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
               <Eyebrow size={9} style={{ marginRight: 6 }}>Categoría</Eyebrow>
-              {REWARD_KINDS.map((k) => (
+              {BENEFIT_KINDS.map((k) => (
                 <FilterPill key={k} active={kindFilter === k} onClick={() => setKindFilter(k)}>
                   {k === "todos" ? "Todas" : k}
                 </FilterPill>
@@ -95,12 +95,12 @@ export default function RecompensasPage() {
 
         {/* grid */}
         <div className="grid-kpi-3" style={{ gap: 18 }}>
-          {rewards.map((r) => (
-            <RewardCard key={r.id} reward={r} onClick={() => setEditingId(r.id)} />
+          {benefits.map((r) => (
+            <BenefitCard key={r.id} reward={r} onClick={() => setEditingId(r.id)} />
           ))}
         </div>
 
-        {rewards.length === 0 && (
+        {benefits.length === 0 && (
           <Panel style={{ marginTop: 12, textAlign: "center", padding: 60 }}>
             <div style={{ fontFamily: SERIF, fontStyle: "italic", fontSize: 18, color: COLORS.ivoryDim }}>· sin resultados ·</div>
           </Panel>
@@ -113,10 +113,10 @@ export default function RecompensasPage() {
         )}
 
         <Modal open={!!editing} onClose={() => setEditingId(null)} width={600}>
-          {editing && <RewardEditor reward={editing} onClose={() => setEditingId(null)} />}
+          {editing && <BenefitEditor reward={editing} onClose={() => setEditingId(null)} />}
         </Modal>
         <Modal open={creating} onClose={() => setCreating(false)} width={600}>
-          {creating && <RewardEditor reward={null} onClose={() => setCreating(false)} />}
+          {creating && <BenefitEditor reward={null} onClose={() => setCreating(false)} />}
         </Modal>
       </div>
     </div>
@@ -135,7 +135,7 @@ function FilterPill({ active, onClick, children }: { active: boolean; onClick: (
   )
 }
 
-function RewardCard({ reward, onClick }: { reward: Reward; onClick: () => void }) {
+function BenefitCard({ reward, onClick }: { reward: Reward; onClick: () => void }) {
   return (
     <Press onClick={onClick} style={{ background: COLORS.blackPanel, border: `0.5px solid ${reward.is_active ? COLORS.hairline : "rgba(217,154,138,0.18)"}`, borderRadius: 2, overflow: "hidden", opacity: reward.is_active ? 1 : 0.7 }} hoverStyle={{ borderColor: COLORS.goldDim }}>
       <div style={{ position: "relative" }}>
@@ -168,13 +168,13 @@ function RewardCard({ reward, onClick }: { reward: Reward; onClick: () => void }
   )
 }
 
-function RewardEditor({ reward, onClose }: { reward: Reward | null; onClose: () => void }) {
-  const create = useCreateReward()
-  const update = useUpdateReward()
-  const del    = useDeleteReward()
+function BenefitEditor({ reward, onClose }: { reward: Reward | null; onClose: () => void }) {
+  const create = useCreateBenefit()
+  const update = useUpdateBenefit()
+  const del    = useDeleteBenefit()
 
   const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm({
-    resolver: yupResolver(rewardSchema),
+    resolver: yupResolver(benefitSchema),
     defaultValues: {
       name:       reward?.name       ?? "",
       kind:       reward?.kind       ?? "Tratamiento",
@@ -211,7 +211,7 @@ function RewardEditor({ reward, onClose }: { reward: Reward | null; onClose: () 
     <div>
       <div style={{ padding: "22px 28px", borderBottom: `0.5px solid ${COLORS.hairline}`, display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
         <div>
-          <Eyebrow gold size={9} style={{ marginBottom: 10 }}>{reward ? "Editar recompensa" : "Nueva recompensa"}</Eyebrow>
+          <Eyebrow gold size={9} style={{ marginBottom: 10 }}>{reward ? "Editar beneficio" : "Nuevo beneficio"}</Eyebrow>
           <Display size={26} italic weight={400}>{reward?.name || "Sin nombre"}</Display>
         </div>
         <Press onClick={onClose} style={{ width: 32, height: 32, borderRadius: "50%", border: `0.5px solid ${COLORS.hairlineStrong}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -268,7 +268,7 @@ function RewardEditor({ reward, onClose }: { reward: Reward | null; onClose: () 
           <div style={{ display: "flex", gap: 10 }}>
             <Btn variant="ghost" onClick={onClose}>Cancelar</Btn>
             <Btn type="submit" variant="gold" disabled={create.isPending || update.isPending}>
-              {create.isPending || update.isPending ? "Guardando…" : reward ? "Guardar" : "Crear recompensa"}
+              {create.isPending || update.isPending ? "Guardando…" : reward ? "Guardar" : "Crear beneficio"}
             </Btn>
           </div>
         </div>

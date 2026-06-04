@@ -50,7 +50,7 @@ export default function LoginPage() {
         {/* brand */}
         <div style={{ textAlign: "center", marginBottom: 48 }}>
           <div style={{ fontFamily: SERIF, fontStyle: "italic", fontSize: 56, color: COLORS.gold, lineHeight: 1, marginBottom: 16 }}>D</div>
-          <Wordmark size={15} sub="Admin · Recompensas" />
+          <Wordmark size={15} sub="Admin · Membership" />
         </div>
 
         <GoldHair width={40} my={32} opacity={0.5} />
@@ -123,7 +123,7 @@ export default function LoginPage() {
 
         <div style={{ marginTop: 32, textAlign: "center" }}>
           <div style={{ fontFamily: MONO, fontSize: 8.5, color: COLORS.ivoryMute, letterSpacing: "0.18em" }}>
-            DSTHETIC · SISTEMA DE RECOMPENSAS · V1
+            DSTHETIC · MEMBERSHIP · V1
           </div>
         </div>
       </div>

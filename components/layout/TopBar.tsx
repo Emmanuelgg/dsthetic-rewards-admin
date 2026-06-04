@@ -12,7 +12,7 @@ const SECTIONS: Record<string, { eyebrow: string; title: string }> = {
   "/dashboard":   { eyebrow: "Vista general",  title: "Dashboard"             },
   "/socios":      { eyebrow: "Administración", title: "Socios"                },
   "/niveles":     { eyebrow: "Programa",       title: "Niveles"               },
-  "/recompensas": { eyebrow: "Catálogo",       title: "Recompensas"           },
+  "/beneficios":  { eyebrow: "Catálogo",        title: "Beneficios"            },
   "/servicios":   { eyebrow: "Catálogo",       title: "Servicios y tratamientos"},
 }
 
@@ -73,7 +73,7 @@ export function TopBar({ search, onSearch }: { search?: string; onSearch?: (v: s
         <input
           value={search ?? ""}
           onChange={(e) => onSearch?.(e.target.value)}
-          placeholder="Buscar socio, recompensa, código…"
+          placeholder="Buscar socio, beneficio, código…"
           style={{
             width: "100%", height: 36,
             paddingLeft: 24, paddingRight: 60,

@@ -22,7 +22,7 @@ const jetbrains = JetBrains_Mono({
 })
 
 export const metadata: Metadata = {
-  title: "Dsthetic · Admin Recompensas",
+  title: "Dsthetic · Admin Membership",
   description: "Panel de administración del programa de lealtad Dsthetic",
 }
 

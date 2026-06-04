@@ -135,7 +135,7 @@ export default function DashboardPage() {
           </Panel>
 
           <Panel pad={26}>
-            <Eyebrow size={9.5} style={{ marginBottom: 6 }}>Recompensas más canjeadas</Eyebrow>
+            <Eyebrow size={9.5} style={{ marginBottom: 6 }}>Beneficios más canjeados</Eyebrow>
             <Display size={22} italic weight={400} style={{ marginBottom: 20 }}>Este período</Display>
             {(topRewards ?? []).slice(0, 5).map((r, i) => (
               <div key={r.reward_id} style={{ marginBottom: 16 }}>
