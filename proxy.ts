@@ -4,7 +4,9 @@ import { NextResponse } from "next/server"
 export default auth((req) => {
   const isLoggedIn   = !!req.auth
   const isLoginPage  = req.nextUrl.pathname === "/login"
-  const isPublicPath = req.nextUrl.pathname.startsWith("/auth")
+  const isPublicPath =
+    req.nextUrl.pathname.startsWith("/auth") ||
+    req.nextUrl.pathname.startsWith("/wallet")
 
   if (isPublicPath) return NextResponse.next()
   if (!isLoggedIn && !isLoginPage) {
